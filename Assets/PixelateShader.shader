@@ -44,6 +44,7 @@
 
 
 	col = fixed4(lossyRound(col.r,_QuantCount), lossyRound(col.g, _QuantCount), lossyRound(col.b, _QuantCount), 1.0);
+	if (col.r) {}
 
 	return col;
 	}
