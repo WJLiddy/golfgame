@@ -29,10 +29,13 @@ public class Baddie : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.rigidbody != null && collision.rigidbody.name == "Cylinder")
+        if(!die && collision.rigidbody != null && collision.rigidbody.name == "Cylinder")
         {
             die = true;
             dieTime = 1f;
+            GameObject go = Instantiate(Resources.Load<GameObject>("prefabs/damagefloater"));
+            go.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1, this.transform.position.z);
+            go.transform.parent = this.transform.parent;
         }
     }
 }

@@ -16,8 +16,8 @@ public class CharMover : MonoBehaviour {
         {
             Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit rh;
-            Physics.Raycast(r, out rh);
-            if(rh.collider != null && rh.collider.name == "FloorINPUT" && GetComponent<Rigidbody>().velocity.magnitude < 1f)
+            Physics.Raycast(r, out rh, 10000, ~LayerMask.NameToLayer("InputCollide"));
+            if(rh.collider != null && GetComponent<Rigidbody>().velocity.magnitude < 1f)
             {
                 Vector3 collide = rh.point;
                 Vector3 dir = rh.point - this.transform.position;
