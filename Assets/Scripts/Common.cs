@@ -6,6 +6,7 @@ public class Common : MonoBehaviour
 {
     public static Common inst;
     public GameObject player;
+    public HeartSystem heartsystem;
 	// Use this for initialization
 	void Start ()
     {

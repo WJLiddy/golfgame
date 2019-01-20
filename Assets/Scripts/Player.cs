@@ -5,9 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Start ()
+    {
+
+        Common.inst.heartsystem.setMaxHeartCount(3);
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -16,6 +19,6 @@ public class Player : MonoBehaviour {
     // called when the cube hits the floor
     void OnCollisionEnter(Collision col)
     {
-        Debug.Log("OnCollisionEnter");
+        Common.inst.heartsystem.setHeartPieceCount(5);
     }
 }
