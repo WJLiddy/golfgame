@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Common "tile" class
 public class Baddie : MonoBehaviour {
 
+    private int moveTimeMax = 16;
+    private float moveTime;
     bool die;
+    public bool isSteady;
     float dieTime;
     // Use this for initialization
     void Start()
@@ -14,7 +18,7 @@ public class Baddie : MonoBehaviour {
 
     void Update()
     {
-
+        bool fmove = false;
         if(die)
         {
             dieTime -= Time.deltaTime;
@@ -27,16 +31,27 @@ public class Baddie : MonoBehaviour {
             }
         } else
         {
-            if (GetComponent<Rigidbody>().velocity.magnitude < 1)
+            if (moveTime <= 0)
             {
-                var toPlayer = AI.returnBestPathToTarget(this.transform.position, Common.inst.player.transform.position);
-                GetComponent<Rigidbody>().AddForce(toPlayer * 5, ForceMode.Impulse);
+                moveTime += ((moveTimeMax) * Common.inst.tempo) / (16f * 60f);
+                if(Vector2.Distance(this.transform.position, Common.inst.player.transform.position) < 20)
+                {
+
+                    var toPlayer = AI.returnBestPathToTarget(this.transform.position, Common.inst.player.transform.position);
+                    toPlayer = toPlayer.normalized;     
+                    GetComponent<Rigidbody>().AddForce(toPlayer * 10, ForceMode.Impulse);
+                    fmove = true;
+
+                }
             }
+            moveTime -= Time.deltaTime;
         }
+        isSteady = fmove ? false : GetComponent<Rigidbody>().velocity.magnitude == 0f;
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        /**
         if(!die && collision.rigidbody != null && collision.rigidbody.name == "Player")
         {
             die = true;
@@ -46,5 +61,6 @@ public class Baddie : MonoBehaviour {
             go.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1, this.transform.position.z);
             go.transform.parent = this.transform.parent;
         }
+    */
     }
 }

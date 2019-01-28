@@ -12,15 +12,19 @@ public class HeartSystem : MonoBehaviour
     int maxHearts;
     int heartPieces;
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
-        heartSprites = Resources.LoadAll<Sprite>("heartsprites");
+        heartSprites = Resources.LoadAll<Sprite>("ui/heartsprites");
         shownObjects = new List<GameObject>();
         heartPrefab = Instantiate(Resources.Load<GameObject>("ui/heartprefab"));
     }
 
     private void clearHeartElements()
     {
+        if(shownObjects == null)
+        {
+            return;
+        }
         foreach (GameObject go in shownObjects)
         {
             Destroy(go);
@@ -35,6 +39,12 @@ public class HeartSystem : MonoBehaviour
         reDraw();
     }
 
+    public void hurt()
+    {
+        setHeartPieceCount(heartPieces - 1);
+        Debug.Log(heartPieces);
+    }
+
     public void setMaxHeartCount(int count)
     {
         maxHearts = count;
@@ -44,14 +54,34 @@ public class HeartSystem : MonoBehaviour
 
     void reDraw()
     {
-        for(int i = 0; i != maxHearts; ++i)
+        if (shownObjects == null)
+        {
+            return;
+
+        }
+        for (int i = 0; i != maxHearts; ++i)
         {
             var heart = Instantiate(heartPrefab);
             heart.transform.SetParent(this.transform);
             heart.transform.localPosition = firstHeartLoc.transform.localPosition + new Vector3(i * 40 + -(40 / 2), -(33 / 2), 0);
             heart.transform.localScale = Vector3.one;
             shownObjects.Add(heart);
-            //heart.
+
+            if(heartPieces >= ((i+1) * 4))
+            {
+                // full
+                heart.GetComponent<UnityEngine.UI.Image>().sprite = heartSprites[4];
+
+            }
+            else if(heartPieces < (i * 4))
+            {
+                //empty
+                heart.GetComponent<UnityEngine.UI.Image>().sprite = heartSprites[0];
+            }
+            else
+            {
+                heart.GetComponent<UnityEngine.UI.Image>().sprite = heartSprites[heartPieces % 4];
+            }
         }
     }
 }

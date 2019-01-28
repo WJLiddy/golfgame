@@ -5,10 +5,11 @@ using UnityEngine;
 public class Common : MonoBehaviour
 {
     public static Common inst;
+    public float tempo = 120.0f;
     public GameObject player;
     public HeartSystem heartsystem;
 	// Use this for initialization
-	void Start ()
+	void Awake()
     {
         inst = this;	
 	}

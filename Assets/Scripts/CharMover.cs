@@ -4,26 +4,40 @@ using UnityEngine;
 
 public class CharMover : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public int moveTimeMax = 4;
+
+    private float moveTime;
+    // Use this for initialization
+    void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (moveTime <= 0)
         {
-            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit rh;
-            Physics.Raycast(r.origin, r.direction, out rh, Mathf.Infinity);
-                
-            if(rh.collider != null && GetComponent<Rigidbody>().velocity.magnitude < 1f)
+            moveTime += (moveTimeMax) * (Common.inst.tempo / (16 * 60));
+
+            if (Input.GetMouseButton(0))
             {
-                Vector3 collide = rh.point;
-                Vector3 dir = rh.point - this.transform.position;
-                GetComponent<Rigidbody>().AddForce( 3 * new Vector3(dir.x, 0, dir.z), ForceMode.Impulse);
+                Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit rh;
+                Physics.Raycast(r.origin, r.direction, out rh, Mathf.Infinity);
+
+                if (rh.collider != null)
+                {
+                    Vector3 collide = rh.point;
+                    Vector3 dir = rh.point - this.transform.position;
+                    Vector3 baseforce = new Vector3(dir.x, 0, dir.z);
+                    if(baseforce.magnitude > 5)
+                    {
+                        baseforce = 5 * baseforce.normalized;
+                    }
+                    GetComponent<Rigidbody>().AddForce(3 * baseforce, ForceMode.Impulse);
+                }
             }
         }
+        moveTime -= Time.deltaTime;
     }
 }
