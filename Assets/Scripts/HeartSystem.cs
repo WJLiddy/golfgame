@@ -42,7 +42,6 @@ public class HeartSystem : MonoBehaviour
     public void hurt()
     {
         setHeartPieceCount(heartPieces - 1);
-        Debug.Log(heartPieces);
     }
 
     public void setMaxHeartCount(int count)

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : PuckCharacter
+{
+    public Vector3 targVec = Vector3.zero;
 
     // Use this for initialization
     void Start()
@@ -12,26 +14,35 @@ public class Player : MonoBehaviour {
         Common.inst.heartsystem.setHeartPieceCount(6);
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-    // called when the cube hits the floor
-    void OnCollisionEnter(Collision col)
+
+    public override int attackPower()
     {
+        return 4;
+    }
 
-        if (col.collider.gameObject.layer != LayerMask.NameToLayer("Enemy"))
-        {
-            return;
+    public override Vector3 desiredMove()
+    {
+        return targVec;
+    }
 
-        }
-            if(!col.collider.attachedRigidbody.gameObject.GetComponent<Baddie>().isSteady)
-            {
+    public override int getMoveTimeMax()
+    {
+        return 4;
+    }
 
-                Debug.Log("hit!");
-                Common.inst.heartsystem.hurt();   
-            }
-            Debug.Log("hit " + col.collider.attachedRigidbody.gameObject.name + "vel" + col.collider.attachedRigidbody.velocity);
-        }
+    public override bool isFriendly()
+    {
+        return true;
+    }
+
+    public override float moveVelocity()
+    {
+        return 15;
+    }
+
+    public override void onCharacterDamaged(int damage)
+    {
+        Common.inst.heartsystem.hurt();
+    }
+	
 }
