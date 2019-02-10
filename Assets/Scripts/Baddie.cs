@@ -27,7 +27,7 @@ public class Baddie : PuckCharacter
 
     public override float moveVelocity()
     {
-        return 10;
+        return 24;
     }
 
     public override void onCharacterDamaged(int i)

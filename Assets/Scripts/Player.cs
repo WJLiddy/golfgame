@@ -27,7 +27,7 @@ public class Player : PuckCharacter
 
     public override int getMoveTimeMax()
     {
-        return 4;
+        return 12;
     }
 
     public override bool isFriendly()
@@ -37,7 +37,7 @@ public class Player : PuckCharacter
 
     public override float moveVelocity()
     {
-        return 15;
+        return 26;
     }
 
     public override void onCharacterDamaged(int damage)
